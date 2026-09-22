@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Rage Bait Bingo 2.0 Online</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎱</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;900&family=Big+Shoulders+Text:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --hall:#D6DBE0; --text:#141414; --muted:#50565c; --panel:#FFFFFF; --line:#141414;
+  --paper:#FFFFFF; --ink:#141414; --spot:#C8175D; --spot-soft:#FBE3EC; --house:#1F4FA3;
+  --display:"Big Shoulders Display","Arial Narrow","Helvetica Neue",Arial,sans-serif;
+  --body:"Big Shoulders Text","Arial Narrow","Helvetica Neue",Arial,sans-serif;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){ --hall:#1E2328; --text:#ECEEF0; --muted:#A9B0B6; --panel:#2A3037; --line:#ECEEF0; }
+}
+:root[data-theme="dark"]{ --hall:#1E2328; --text:#ECEEF0; --muted:#A9B0B6; --panel:#2A3037; --line:#ECEEF0; }
+html{ scroll-padding-top:env(safe-area-inset-top,0px); }
+html,body{ height:100%; }
+#app{ min-height:100%; display:flex; flex-direction:column; }
+#app > *{ flex:1 0 auto; }
+*,*::before,*::after{ box-sizing:inherit; }
+body{ margin:0; background:var(--hall); color:var(--text); font-family:var(--body); font-size:1.12rem; line-height:1.42; }
+button,input{ font:inherit; }
+h1,h2,h3{ font-family:var(--display); font-weight:900; line-height:.95; margin:0; }
+.wrap{ max-width:60rem; margin:0 auto; padding:1.5rem 1.1rem 3rem; }
+.muted{ color:var(--muted); }
+.btn{ font-family:var(--display); font-weight:900; font-size:1.2rem; letter-spacing:.02em; padding:.45rem 1rem .5rem; border:3px solid var(--ink); background:var(--paper); color:var(--ink); cursor:pointer; }
+.btn:hover{ background:var(--spot-soft); }
+.btn.hot{ background:var(--spot); color:#fff; border-color:var(--spot); }
+.btn.hot:hover{ filter:brightness(1.08); }
+.btn.small{ font-size:1rem; padding:.25rem .6rem .3rem; border-width:2px; }
+.btn:disabled{ opacity:.45; cursor:default; }
+input[type=text],input[type=number]{ border:3px solid var(--ink); padding:.4rem .6rem; background:#fff; color:var(--ink); min-width:0; }
+.row{ display:flex; flex-wrap:wrap; gap:.6rem; align-items:center; }
+
+/* landing */
+.hero h1{ font-size:clamp(3rem,11vw,6rem); }
+.hero h1 span{ color:var(--spot); }
+.hero p{ max-width:38rem; margin:.7rem 0 0; }
+.doors{ display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1.2rem; margin:1.6rem 0; }
+.door{ background:var(--paper); color:var(--ink); border:3px solid var(--ink); padding:1.1rem 1.1rem 1.2rem; }
+.door h2{ font-size:2rem; margin-bottom:.4rem; }
+.door p{ margin:0 0 .8rem; }
+details.setup{ background:var(--paper); color:var(--ink); border:3px solid var(--ink); padding:.8rem 1.1rem; }
+details.setup summary{ font-family:var(--display); font-weight:900; font-size:1.4rem; cursor:pointer; }
+details.setup ol{ padding-left:1.3rem; margin:.6rem 0 .2rem; }
+details.setup li{ margin-bottom:.45rem; }
+
+/* card */
+.card{ background:var(--paper); color:var(--ink); border:3px solid var(--ink); width:min(100%,30rem); }
+.band{ background:var(--spot); color:#fff; display:flex; align-items:baseline; justify-content:space-between; gap:.5rem; padding:.4rem .75rem .35rem; }
+.band b{ font-family:var(--display); font-weight:900; font-size:2rem; line-height:1; }
+.band span{ font-family:var(--display); font-weight:700; font-size:1.1rem; white-space:nowrap; }
+.card.house .band{ background:var(--house); }
+.grid{ display:grid; grid-template-columns:repeat(5,1fr); padding:.65rem .75rem .75rem; }
+.head{ font-family:var(--display); font-weight:900; color:var(--spot); text-align:center; font-size:1.8rem; line-height:1.1; }
+.card.house .head{ color:var(--house); }
+.cell{ aspect-ratio:1; display:flex; align-items:center; justify-content:center; position:relative; font-family:var(--display); font-weight:900; font-size:clamp(1.5rem,6vw,2.3rem); border:2px solid var(--ink); margin:-1px; background:var(--paper); color:var(--ink); padding:0; }
+button.cell{ cursor:pointer; }
+button.cell:hover{ background:#f3f4f6; }
+.cell.x::after,.cell.o::after{ content:""; position:absolute; inset:14%; pointer-events:none; }
+.cell.x::after{ background:
+  linear-gradient(45deg,transparent 47%,var(--spot) 47%,var(--spot) 53%,transparent 53%),
+  linear-gradient(-45deg,transparent 47%,var(--spot) 47%,var(--spot) 53%,transparent 53%); opacity:.85; }
+.cell.o::after{ border:5px solid var(--house); border-radius:50%; opacity:.85; }
+.rules{ font-weight:600; margin:.1rem .75rem .7rem; font-size:1rem; }
+
+.player{ display:grid; grid-template-columns:minmax(0,30rem) minmax(0,1fr); gap:1.4rem; align-items:start; }
+@media (max-width:760px){ .player{ grid-template-columns:1fr; } }
+.panel{ background:var(--paper); color:var(--ink); border:3px solid var(--ink); padding:1rem 1.1rem 1.1rem; margin-bottom:1rem; }
+.panel h3{ font-size:1.5rem; margin-bottom:.5rem; }
+.bar{ height:14px; border:2px solid var(--ink); margin-top:.6rem; background:#fff; }
+.bar i{ display:block; height:100%; width:0; background:var(--spot); transition:width .25s linear; }
+.status{ min-height:1.4em; margin-top:.4rem; font-weight:600; }
+.notes{ margin:.4rem 0 0; padding:0; list-style:none; }
+.notes li{ border-top:1px solid #ccc; padding:.45rem 0; }
+.notes b{ font-family:var(--display); font-weight:900; font-size:1.15rem; }
+.code{ font-family:var(--display); font-weight:900; font-size:2rem; letter-spacing:.05em; word-break:break-all; color:var(--spot); }
+
+/* console */
+.console{ display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:1rem; align-items:start; }
+.bignum{ font-family:var(--display); font-weight:900; font-size:5rem; line-height:1; color:var(--spot); }
+.plist{ list-style:none; padding:0; margin:0; }
+.plist li{ display:flex; gap:.6rem; align-items:center; justify-content:space-between; border-top:1px solid #ccc; padding:.4rem 0; }
+.plist li.live b{ text-decoration:line-through; color:#777; }
+.checks label{ display:flex; gap:.5rem; align-items:flex-start; margin-bottom:.5rem; }
+.checks input{ margin-top:.35rem; }
+.verify-out{ margin-top:.8rem; }
+.flag{ font-weight:800; color:var(--spot); }
+
+/* stage */
+.stage{ min-height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:2rem 1rem; text-align:center; }
+.stage .logo{ font-family:var(--display); font-weight:900; font-size:clamp(2rem,6vw,3.6rem); }
+.stage .logo span{ color:var(--spot); }
+.stage .callno{ font-family:var(--display); font-weight:700; font-size:clamp(1.3rem,3vw,2rem); color:var(--muted); margin-top:1rem; }
+.stage .num{ font-family:var(--display); font-weight:900; font-size:clamp(9rem,38vw,24rem); line-height:.85; color:var(--spot); }
+.patchcard{ background:var(--paper); color:var(--ink); border:4px solid var(--ink); max-width:44rem; width:100%; text-align:left; }
+.patchcard .band b{ font-size:clamp(1.8rem,4vw,2.6rem); }
+.patchcard .body{ padding:1.1rem 1.3rem 1.3rem; }
+.patchcard h2{ font-size:clamp(2.2rem,5vw,3.4rem); margin-bottom:.4rem; }
+.patchcard p{ font-size:clamp(1.4rem,3vw,2rem); margin:0 0 .9rem; }
+.patchcard .install{ border-top:3px solid var(--ink); padding-top:.7rem; font-family:var(--display); font-weight:900; font-size:clamp(1.4rem,3vw,2rem); }
+.patchcard .install span{ color:var(--spot); letter-spacing:.06em; }
+.housewin{ font-family:var(--display); font-weight:900; font-size:clamp(4rem,14vw,9rem); line-height:.85; color:var(--house); margin-bottom:1rem; }
+
+/* toast + modal */
+.toast{ position:fixed; left:50%; bottom:calc(1.2rem + env(safe-area-inset-bottom,0px)); transform:translateX(-50%); background:var(--ink); color:#fff; padding:.6rem 1.1rem; font-weight:800; border:3px solid var(--spot); max-width:90vw; z-index:20; opacity:0; transition:opacity .2s; pointer-events:none; }
+.toast.on{ opacity:1; }
+.modal{ position:fixed; inset:0; background:rgba(0,0,0,.55); display:none; align-items:center; justify-content:center; z-index:30; padding:1rem; }
+.modal.on{ display:flex; }
+.modal .panel{ max-width:26rem; margin:0; }
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div class="modal" id="modal"><div class="panel" id="modalBody"></div></div>
+
+<script>
+/* ---------- shared ---------- */
+const PATCHES=[
+ {v:"1.1",t:"Provisional Evens",code:"EV3N",x:"Even numbers are now provisional. Circle them instead of marking them. A circled number becomes a mark only if the next odd number you mark is higher."},
+ {v:"1.2",t:"Blackout Lite",code:"L1TE",x:"Lines only count if both end squares are odd."},
+ {v:"1.3",t:"Diagonal Lock",code:"PR1M",x:"Diagonals only count if the center square is prime. For clarity, the primes are 1, 2, 3, 5, and 9."},
+ {v:"1.4",t:"Verification Tax",code:"TAX4",x:"When your card is checked, your whole row is frozen until the next even number is called."},
+ {v:"1.5",t:"Cooldown",code:"C00L",x:"After you mark a number, skip your next mark."},
+ {v:"1.6",t:"Ping Penalty",code:"P1NG",x:"If two players type BINGO in chat within the same second, both claims are void."},
+ {v:"1.7",t:"Pattern Swap",code:"SWAP",x:"Only the two long diagonals count now. Marks along a diagonal must alternate X, circle, X."},
+ {v:"1.8",t:"Silent Patch",code:null,silent:true,x:"Numbers ending in 7 no longer count."},
+ {v:"1.9",t:"Goal Rebalance",code:"B4L4",x:"Lines were too easy. You now win by being the first player who can no longer make any line."},
+ {v:"2.0",t:"Rollback",code:"R0LL",x:"The last three patches are reverted. Except the ones that weren't."},
+ {v:"2.1",t:"Premium Skip",code:"P4Y2",x:"Any player may skip Cooldown by paying the Caller a compliment in chat. The Caller decides what counts."}
+];
+const IDX=Object.fromEntries(PATCHES.map((p,i)=>[p.v,i]));
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+function layout(seed){const r=mulberry32(seed*7919+256);const a=Array.from({length:25},(_,i)=>i+1);for(let i=24;i>0;i--){const j=Math.floor(r()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+const CALL_ORDER=layout(9999);
+const PATCH_AFTER=new Set([5,8,11,14,17,20,23]);
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function load(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d;}catch(e){return d;}}
+function save(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
+let toastT;function toast(m){const t=$("#toast");t.textContent=m;t.classList.add("on");clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove("on"),2600);}
+function modal(html){$("#modalBody").innerHTML=html;$("#modal").classList.add("on");}
+function closeModal(){$("#modal").classList.remove("on");}
+function cardHTML(n,marks,opts={}){
+  const nums=layout(n),no=String(n).padStart(2,"0");
+  const cells=nums.map((x,i)=>{const m=marks?marks[i]:0,cls="cell"+(m===1?" x":m===2?" o":"");
+    return opts.interactive?`<button class="${cls}" data-i="${i}" aria-label="${x}${m===1?", marked":m===2?", circled":""}">${x}</button>`:`<div class="${cls}">${x}</div>`;}).join("");
+  return `<div class="card${n===0?" house":""}"${opts.style?` style="${opts.style}"`:""}><div class="band"><b>Rage Bait Bingo</b><span>${opts.right||"No. "+no}</span></div>
+  <div class="grid">${"BINGO".split("").map(l=>`<div class="head">${l}</div>`).join("")}${cells}</div>${opts.foot||""}</div>`;
+}
+/* verification code: card(7b) + 25 marks(2b) + installed mask(11b) */
+const B32="0123456789ABCDEFGHJKMNPQRSTVWXYZ";
+function encodeState(card,marks,mask){let b=BigInt(card);for(const m of marks)b=(b<<2n)|BigInt(m);b=(b<<11n)|BigInt(mask);let s="";while(b>0n){s=B32[Number(b%32n)]+s;b/=32n;}s=s.padStart(14,"0");return s.match(/.{1,4}/g).join("-");}
+function decodeState(str){
+  const s=str.toUpperCase().replace(/O/g,"0").replace(/[IL]/g,"1").replace(/[^0-9A-Z]/g,"");
+  if(s.length<12||s.length>15)return null;let b=0n;for(const c of s){const v=B32.indexOf(c);if(v<0)return null;b=b*32n+BigInt(v);}
+  const mask=Number(b&2047n);b>>=11n;const marks=[];for(let i=0;i<25;i++){marks.unshift(Number(b&3n));b>>=2n;}
+  const card=Number(b);if(card<1||card>99||marks.some(m=>m>2))return null;return{card,marks,mask};
+}
+const maskOf=list=>list.reduce((m,v)=>m|(1<<IDX[v]),0);
+const listOf=mask=>PATCHES.filter((p,i)=>mask&(1<<i)).map(p=>p.v);
+/* console <-> stage */
+let chan=null;try{chan=new BroadcastChannel("rbb2");}catch(e){}
+function broadcast(msg){save("rbb2-stage",msg);if(chan)chan.postMessage(msg);}
+
+/* ---------- router ---------- */
+function route(){
+  const h=location.hash.replace(/^#/,"");
+  if(h.startsWith("player/")){const n=parseInt(h.split("/")[1],10);if(n>=1&&n<=99)return player(n);}
+  if(h==="console")return consoleView();
+  if(h==="stage")return stage();
+  landing();
+}
+window.addEventListener("hashchange",route);
+
+/* ---------- landing ---------- */
+function landing(){
+  document.title="Rage Bait Bingo 2.0 Online";
+  $("#app").innerHTML=`<div class="wrap">
+  <div class="hero"><h1>Rage Bait <span>Bingo</span> 2.0</h1>
+  <p>Online edition. Everyone joins from their own browser. The Caller runs the game from a console and screen shares a stage. Voice and chat do the rest.</p></div>
+  <div class="doors">
+    <div class="door"><h2>Player</h2><p>Enter the card number your instructor gave you.</p>
+      <div class="row"><input type="number" id="cardNo" min="1" max="99" placeholder="1 to 99" aria-label="Card number" style="width:8rem">
+      <button class="btn hot" id="go">Get my card</button></div>
+      <p class="muted" style="margin:.7rem 0 0">No number? <button class="btn small" id="deal">Deal me one</button></p></div>
+    <div class="door"><h2>Caller</h2><p>Only the Caller clicks this. Open the console here, then open the stage in a second window and screen share that one.</p>
+      <div class="row"><a class="btn hot" href="#console" style="text-decoration:none">Open console</a><a class="btn" href="#stage" data-stage style="text-decoration:none">Open stage</a></div></div>
+  </div>
+  <details class="setup"><summary>Instructor setup</summary><ol>
+    <li>Pick one student to be the Caller. Send them this link privately and tell them to open the console and the stage.</li>
+    <li>The Caller screen shares the stage window only. The console stays private.</li>
+    <li>Give every other student a card number from 1 to 99. Roster order works. Cards match the printed edition, so card 14 online is card 14 on paper.</li>
+    <li>Mixed room? Paper cards for the room, starting at 1. Remote players start at 31, so nobody shares a card. Put the stage window on the projector and share it on the call. Ping Penalty covers BINGOs said out loud too.</li>
+    <li>Players mark their own cards. Claims happen in chat: type BINGO, then paste the verification code from the Claim button. The Caller checks it in the console.</li>
+    <li>When you want the game to end, tell the Caller. The house always wins.</li>
+    <li>Running it in a room instead? The paper edition is here: <a href="print/player-cards.html">player cards</a>, <a href="print/caller-packet.html">caller packet</a>, and <a href="print/wrap-up-lecture-sheet.html">wrap-up lecture sheet</a>.</li>
+    <li>Run the debrief with the <a href="print/wrap-up-lecture-sheet.html">wrap-up lecture sheet</a>. Each patch breaks one of the ten basic game design tools from Chapter 2 of Sharp and Macklin, Games, Design and Play.</li>
+  </ol></details></div>`;
+  $("#go").onclick=()=>{const n=parseInt($("#cardNo").value,10);if(n>=1&&n<=99)location.hash="player/"+n;else toast("Card numbers run 1 to 99.");};
+  $("#cardNo").onkeydown=e=>{if(e.key==="Enter")$("#go").click();};
+  $("#deal").onclick=()=>{location.hash="player/"+(1+Math.floor(Math.random()*99));};
+}
+
+/* ---------- player ---------- */
+function player(n){
+  document.title=`Card ${n} · Rage Bait Bingo`;
+  const key="rbb2-player-"+n;
+  let S=load(key,{marks:Array(25).fill(0),installed:[],cooldown:false,failed:[]});
+  const nums=layout(n);
+  const has=v=>S.installed.includes(v);
+  const version=()=>S.installed.length?S.installed.map(v=>parseFloat(v)).sort((a,b)=>b-a)[0].toFixed(1):"1.0";
+  const persist=()=>save(key,S);
+
+  function render(){
+    $("#app").innerHTML=`<div class="wrap"><div class="player">
+      <div>${cardHTML(n,S.marks,{interactive:true,right:`No. ${String(n).padStart(2,"0")} · v${version()}`,foot:`<p class="rules">Rules as of patch 1.0: mark each number the Caller calls. Five in a row wins. Tap once to mark, twice to circle, three times to clear.</p>`})}
+        ${has("2.1")&&S.cooldown?`<div class="row" style="margin-top:.8rem"><button class="btn hot" id="skip">Premium Skip</button></div>`:""}</div>
+      <div>
+        <div class="panel"><h3>Updates</h3><p style="margin:0 0 .5rem">When the Caller ships a patch, enter the install code.</p>
+          <div class="row"><input type="text" id="code" maxlength="8" placeholder="Install code" aria-label="Install code" style="width:10rem;text-transform:uppercase"><button class="btn" id="install">Install</button></div>
+          <div class="bar" id="bar" hidden><i></i></div><div class="status" id="status"></div></div>
+        <div class="panel"><h3>Claim</h3><p style="margin:0 0 .6rem">Think you won? Type BINGO in chat, then paste your verification code.</p>
+          <button class="btn hot" id="claim">Get verification code</button><div id="claimOut"></div></div>
+        <div class="panel"><h3>Patch notes</h3>${S.installed.length?`<ul class="notes">${PATCHES.filter(p=>has(p.v)).map(p=>`<li><b>${p.v} ${esc(p.t)}</b><br>${esc(p.x)}</li>`).join("")}</ul>`:`<p class="muted" style="margin:0">You're on 1.0. No patches installed.</p>`}</div>
+        <p class="muted"><button class="btn small" id="reset">Clear my card</button></p>
+      </div></div></div>`;
+    document.querySelectorAll("button.cell").forEach(b=>b.onclick=()=>tap(+b.dataset.i));
+    $("#install").onclick=install; $("#code").onkeydown=e=>{if(e.key==="Enter")install();};
+    $("#claim").onclick=()=>{$("#claimOut").innerHTML=`<p style="margin:.8rem 0 .2rem">Paste this in chat:</p><div class="code">${encodeState(n,S.marks,maskOf(S.installed))}</div>`;};
+    $("#reset").onclick=()=>modal(`<h3>Clear this card?</h3><p>All marks and installed patches on card ${n} will be removed.</p><div class="row"><button class="btn hot" id="yes">Clear it</button><button class="btn" id="no">Keep it</button></div>`)||wire({yes:()=>{S={marks:Array(25).fill(0),installed:[],cooldown:false,failed:[]};persist();closeModal();render();},no:closeModal});
+    const sk=$("#skip");if(sk)sk.onclick=()=>{modal(`<h3>Premium Skip</h3><p>Has the Caller accepted your compliment?</p><div class="row"><button class="btn hot" id="yes">Yes, it was accepted</button><button class="btn" id="no">Not yet</button></div>`);wire({yes:()=>{S.cooldown=false;persist();closeModal();toast("Cooldown skipped. Thank you for your purchase.");render();},no:closeModal});};
+  }
+  function wire(map){for(const id in map){const el=document.getElementById(id);if(el)el.onclick=map[id];}}
+
+  function tap(i){
+    const cur=S.marks[i], even=nums[i]%2===0;
+    let next=(cur+1)%3;
+    if(has("1.1")&&even&&next===1){next=2;if(cur===0)toast("Even numbers are provisional. Circled instead.");}
+    const adding=cur===0&&next!==0;
+    if(adding&&has("1.5")&&S.cooldown){S.cooldown=false;persist();toast("Cooldown. This mark was skipped.");render();return;}
+    S.marks[i]=next;
+    if(adding&&has("1.5"))S.cooldown=true;
+    persist();render();
+  }
+
+  function install(){
+    const code=$("#code").value.trim().toUpperCase().replace(/O/g,"0").replace(/I/g,"1");
+    const p=PATCHES.find(q=>q.code&&q.code===code);
+    const st=$("#status");
+    if(!p){st.textContent="Invalid code. Please contact support.";return;}
+    if(has(p.v)){st.textContent="Already up to date.";return;}
+    const bar=$("#bar"),fill=bar.querySelector("i");bar.hidden=false;$("#install").disabled=true;
+    const stages=["Downloading","Verifying","Applying"];let k=0;
+    const willFail=!S.failed.includes(p.v)&&Math.random()<0.25;
+    const tick=setInterval(()=>{
+      k++;fill.style.width=Math.min(100,k*9)+"%";st.textContent=`${stages[Math.min(2,Math.floor(k/4))]} patch ${p.v}...`;
+      if(willFail&&k===8){clearInterval(tick);S.failed.push(p.v);persist();fill.style.width="0";st.textContent="Install failed. Error 0x8BAD. Try again.";$("#install").disabled=false;return;}
+      if(k>=11){clearInterval(tick);applyPatch(p);}
+    },220);
+  }
+  function applyPatch(p){
+    if(p.v==="2.0"){
+      const last=S.installed.slice(-3), r=mulberry32(n*31+7);
+      let revert=last.filter(()=>r()<0.5); if(!revert.length&&last.length)revert=[last[Math.floor(r()*last.length)]];
+      S.installed=S.installed.filter(v=>!revert.includes(v));
+      if(!has("1.5"))S.cooldown=false;
+    }
+    S.installed.push(p.v);persist();render();
+    $("#status").textContent=p.v==="2.0"?"Rollback complete.":`Patch ${p.v} installed.`;
+  }
+  render();
+}
+
+/* ---------- caller console ---------- */
+function consoleView(){
+  document.title="Caller Console · Rage Bait Bingo";
+  let C=load("rbb2-caller",{idx:0,deployed:[],moves:[false,false,false,false],current:null});
+  const persist=()=>save("rbb2-caller",C);
+  const called=()=>CALL_ORDER.slice(0,C.idx);
+
+  function render(){
+    const due=PATCH_AFTER.has(C.idx);
+    $("#app").innerHTML=`<div class="wrap">
+    <div class="row" style="justify-content:space-between;margin-bottom:1rem"><h1 style="font-size:2.6rem">Caller <span style="color:var(--spot)">Console</span></h1>
+      <a class="btn small" href="#stage" data-stage style="text-decoration:none">Open stage window</a></div>
+    <p class="muted" style="margin:0 0 1rem;max-width:44rem">This window is private. Screen share the stage window, never this one. You call numbers, you ship patches, and the house always wins.</p>
+    <div class="console">
+      <div class="panel"><h3>Calling</h3>
+        <div class="bignum">${C.current??"--"}</div>
+        <p style="margin:.2rem 0 .7rem">Call ${C.idx} of 25${due?` · <span class="flag">Patch now</span>`:""}</p>
+        <div class="row"><button class="btn hot" id="next" ${C.idx>=25?"disabled":""}>Next call</button></div>
+        <p class="muted" style="margin:.7rem 0 0">Say each number twice. Play the first five calls clean. When it says patch now, ship the next patch. Any time someone claims bingo, ship the next patch before you check them.</p></div>
+      <div class="panel"><h3>Patches</h3><p style="margin:0 0 .4rem">Ship them in order. Never explain one. If asked, read it again, slower.</p>
+        <ul class="plist">${PATCHES.map(p=>{const live=C.deployed.includes(p.v);return `<li class="${live?"live":""}"><span><b>${p.v} ${esc(p.t)}</b><br><small class="muted">${p.silent?"Silent. Shows nothing on stage. Enforce only on claims.":`Install code ${p.code}`}</small></span><button class="btn small" data-v="${p.v}" ${live?"disabled":""}>${live?"Live":"Ship"}</button></li>`;}).join("")}</ul></div>
+      <div class="panel"><h3>Check a claim</h3><p style="margin:0 0 .5rem">Paste their verification code. Read their card out loud, slowly. Find the patch that disqualifies them. There is always one.</p>
+        <div class="row"><input type="text" id="vcode" placeholder="XXXX-XXXX-XXXX-XX" aria-label="Verification code" style="flex:1"><button class="btn" id="verify">Check</button></div><div class="verify-out" id="vout"></div></div>
+      <div class="panel checks"><h3>House moves</h3><p style="margin:0 0 .6rem">Use each once, whenever you like.</p>
+        ${["Call a number that was already called. If challenged, it was a different 14.","Ship a patch to one player only. Send them the code in a private message.","Misread a player's card out loud during a check.","Take a mark back from a player for lag."].map((t,i)=>`<label><input type="checkbox" data-m="${i}" ${C.moves[i]?"checked":""}><span>${t}</span></label>`).join("")}
+        <div class="row"><button class="btn small" id="repeat" ${C.idx<2?"disabled":""}>Repeat an old call</button></div></div>
+      <div class="panel"><h3>Ending</h3><p style="margin:0 0 .6rem">When the instructor gives the signal, put the House card on stage and call bingo. Explain nothing.</p>
+        <div class="row"><button class="btn hot" id="house">House wins</button><button class="btn small" id="newgame">Reset game</button></div>
+        ${cardHTML(0,null,{right:"No. 00",style:"margin-top:1rem;width:100%;max-width:20rem"})}</div>
+    </div></div>`;
+    $("#next").onclick=()=>{if(C.idx>=25)return;C.current=CALL_ORDER[C.idx];C.idx++;persist();broadcast({mode:"call",num:C.current,idx:C.idx});render();};
+    document.querySelectorAll(".plist button").forEach(b=>b.onclick=()=>{const p=PATCHES[IDX[b.dataset.v]];C.deployed.push(p.v);persist();if(!p.silent)broadcast({mode:"patch",v:p.v});else toast("Silent Patch is live. Nothing was shown.");render();});
+    document.querySelectorAll("[data-m]").forEach(c=>c.onchange=()=>{C.moves[+c.dataset.m]=c.checked;persist();});
+    $("#repeat").onclick=()=>{const pool=called().slice(0,-1);const x=pool[Math.floor(Math.random()*pool.length)];C.current=x;persist();broadcast({mode:"call",num:x,idx:C.idx});render();toast(`Repeated ${x}. It was a different ${x}.`);};
+    $("#verify").onclick=verify;$("#vcode").onkeydown=e=>{if(e.key==="Enter")verify();};
+    $("#house").onclick=()=>{broadcast({mode:"house"});toast("House card is on stage.");};
+    $("#newgame").onclick=()=>{modal(`<h3>Reset the game?</h3><p>Calls, shipped patches, and house moves go back to zero.</p><div class="row"><button class="btn hot" id="yes">Reset</button><button class="btn" id="no">Cancel</button></div>`);$("#yes").onclick=()=>{C={idx:0,deployed:[],moves:[false,false,false,false],current:null};persist();broadcast({mode:"idle"});closeModal();render();};$("#no").onclick=closeModal;};
+  }
+  function verify(){
+    const d=decodeState($("#vcode").value),out=$("#vout");
+    if(!d){out.innerHTML=`<p class="flag">That code doesn't read. Ask them to paste it again.</p>`;return;}
+    const inst=listOf(d.mask),missing=C.deployed.filter(v=>!PATCHES[IDX[v]].silent&&!inst.includes(v));
+    const nums=layout(d.card),calledSet=new Set(called());
+    const bogus=nums.filter((x,i)=>d.marks[i]&&!calledSet.has(x));
+    const sevens=nums.filter((x,i)=>d.marks[i]&&x%10===7);
+    const flags=[];
+    if(missing.length)flags.push(`Outdated client. Missing ${missing.join(", ")}.`);
+    if(bogus.length)flags.push(`Marked numbers that were never called: ${bogus.join(", ")}.`);
+    if(C.deployed.includes("1.8")&&sevens.length)flags.push(`Silent Patch: ${sevens.join(", ")} no longer count.`);
+    out.innerHTML=cardHTML(d.card,d.marks,{right:`No. ${String(d.card).padStart(2,"0")}`,style:"width:100%;max-width:22rem"})+
+      `<p style="margin:.6rem 0 .2rem"><b>Installed:</b> ${inst.length?inst.join(", "):"nothing, still on 1.0"}</p>`+
+      (flags.length?flags.map(f=>`<p class="flag" style="margin:.2rem 0">${f}</p>`).join(""):`<p class="muted" style="margin:.2rem 0">Nothing obvious. Check the patch notes. There is always one.</p>`);
+  }
+  render();
+}
+
+/* ---------- stage ---------- */
+function stage(){
+  document.title="Rage Bait Bingo · Stage";
+  function show(m){
+    m=m||{mode:"idle"};
+    let inner="";
+    if(m.mode==="call")inner=`<div class="logo">Rage Bait <span>Bingo</span></div><div class="num">${m.num}</div><div class="callno">Call ${m.idx}</div>`;
+    else if(m.mode==="patch"){const p=PATCHES[IDX[m.v]];inner=`<div class="patchcard"><div class="band"><b>Update required</b><span>Patch ${p.v}</span></div><div class="body"><h2>${esc(p.t)}</h2><p>${esc(p.x)}</p><div class="install">Install code: <span>${p.code}</span></div></div></div>`;}
+    else if(m.mode==="house")inner=`<div class="housewin">Bingo.</div>${cardHTML(0,Array(25).fill(1),{right:"No. 00 · House"})}`;
+    else inner=`<div class="logo" style="font-size:clamp(3rem,11vw,7rem);line-height:.9">Rage Bait <span>Bingo</span></div><div class="callno">Version 2.0. Get your card ready.</div>`;
+    $("#app").innerHTML=`<div class="stage">${inner}</div>`;
+  }
+  show(load("rbb2-stage",null));
+  if(chan)chan.onmessage=e=>show(e.data);
+  window.addEventListener("storage",e=>{if(e.key==="rbb2-stage")show(load("rbb2-stage",null));});
+}
+
+$("#modal").addEventListener("click",e=>{if(e.target.id==="modal")closeModal();});
+/* stage gets its own window, so sharing it can never expose the console tab */
+document.addEventListener("click",e=>{const a=e.target.closest("[data-stage]");if(!a)return;e.preventDefault();
+  const w=window.open(location.pathname+location.search+"#stage","rbb2-stage","width=1280,height=760");
+  if(w)w.focus();else toast("Pop-up blocked. Allow pop-ups for this site and click again.");});
+route();
+</script>
+</body>
+</html>

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Rage Bait Bingo 2.0 · Wrap-Up Lecture Sheet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;900&family=Big+Shoulders+Text:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --hall:#D6DBE0; --text:#141414; --muted:#50565c;
+  --paper:#FFFFFF; --ink:#141414; --spot:#C8175D; --house:#1F4FA3; --gray:#5b6168;
+  --display:"Big Shoulders Display","Arial Narrow","Helvetica Neue",Arial,sans-serif;
+  --body:"Big Shoulders Text","Arial Narrow","Helvetica Neue",Arial,sans-serif;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){ --hall:#1E2328; --text:#ECEEF0; --muted:#A9B0B6; }
+}
+:root[data-theme="dark"]{ --hall:#1E2328; --text:#ECEEF0; --muted:#A9B0B6; }
+html{ scroll-padding-top:env(safe-area-inset-top,0px); }
+*,*::before,*::after{ box-sizing:inherit; }
+body{ margin:0; background:var(--hall); color:var(--text); font-family:var(--body); font-size:1.12rem; line-height:1.42; }
+.sheet{ background:var(--paper); color:var(--ink); max-width:48rem; margin:1.5rem auto 3rem; padding:1.75rem 1.75rem 2rem; border:3px solid var(--ink); }
+header h1{ font-family:var(--display); font-weight:900; font-size:clamp(2.4rem,8vw,3.6rem); line-height:.92; margin:0 0 .5rem; }
+header h1 span{ color:var(--spot); }
+header p{ margin:0 0 .5rem; max-width:40rem; }
+.legend{ display:flex; flex-wrap:wrap; gap:.4rem 1.1rem; margin:.8rem 0 .2rem; font-size:.95rem; }
+.tag{ display:inline-block; font-family:var(--display); font-weight:900; font-size:.85rem; letter-spacing:.04em; text-transform:uppercase; padding:.02rem .4rem .06rem; border:2px solid currentColor; line-height:1.2; vertical-align:.08em; margin-right:.35rem; }
+.ignored{ color:var(--gray); } .broken{ color:var(--spot); } .mocked{ color:var(--house); }
+
+.tool{ display:grid; grid-template-columns:3.6rem 1fr; gap:0 .9rem; border-top:3px solid var(--ink); padding:1rem 0 .4rem; break-inside:avoid; }
+.num{ font-family:var(--display); font-weight:900; font-size:3rem; line-height:.85; color:var(--spot); }
+.tool h2{ font-family:var(--display); font-weight:900; font-size:1.75rem; line-height:1; margin:0 0 .35rem; }
+.tool .lead{ font-weight:800; margin:0 0 .45rem; }
+.tool p{ margin:0 0 .45rem; }
+.close{ border-top:3px solid var(--ink); padding-top:1rem; margin-top:.4rem; }
+.close h2{ font-family:var(--display); font-weight:900; font-size:1.75rem; margin:0 0 .35rem; }
+.close p{ margin:0 0 .5rem; max-width:40rem; }
+.note{ color:var(--gray); font-size:.95rem; }
+
+@media print{
+  @page{ size:letter portrait; margin:.5in; }
+  :root{ padding:0; }
+  body{ background:#fff; font-size:10.5pt; line-height:1.35; }
+  .sheet{ border:none; margin:0; padding:0; max-width:none; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  .tool{ padding:.1in 0 .02in; }
+  .num{ font-size:28pt; }
+  .tool h2{ font-size:16pt; }
+}
+</style>
+</head>
+<body>
+<main class="sheet">
+<header>
+  <h1>Rage Bait Bingo <span>Wrap-Up</span></h1>
+  <p>Every place the game ignored, broke, or made fun of one of the ten Chapter 2 tools. Teach it after play, using their complaints as the examples. Whatever made them angry is on this page.</p>
+  <div class="legend">
+    <span><span class="tag ignored">Ignored</span>the game never uses the tool</span>
+    <span><span class="tag broken">Broken</span>a rule sabotages it</span>
+    <span><span class="tag mocked">Mocked</span>the game jokes about it</span>
+  </div>
+</header>
+
+<section class="tool"><div class="num">01</div><div>
+  <h2>Constraint</h2>
+  <p class="lead">Good constraints limit play to make it interesting. These limit play and make nothing.</p>
+  <p><span class="tag broken">Broken</span>Blackout Lite and Pattern Swap narrow what counts as a line with no reason behind the rule. The constraint exists only to take things away.</p>
+  <p><span class="tag mocked">Mocked</span>Diagonal Lock defines the primes as 1, 2, 3, 5, and 9, and the Caller insists. A constraint that contradicts what players already know turns rules into authority.</p>
+  <p><span class="tag broken">Broken</span>"Apply a patch to one table only." A constraint that doesn't apply to everyone isn't a rule anymore. It's a punishment.</p>
+</div></section>
+
+<section class="tool"><div class="num">02</div><div>
+  <h2>Direct actions</h2>
+  <p class="lead">Bingo has one verb: mark a number. Every patch attacked that verb instead of adding a new one.</p>
+  <p><span class="tag broken">Broken</span>Cooldown takes away the only action in the game every other turn.</p>
+  <p><span class="tag broken">Broken</span>Provisional Evens turns marking into circling, an action that might count later. Players act and can't tell whether they did anything.</p>
+  <p><span class="tag broken">Broken</span>The Caller can take a mark back "for lag." Your action can be undone by someone else, for a reason that doesn't exist.</p>
+</div></section>
+
+<section class="tool"><div class="num">03</div><div>
+  <h2>Goals</h2>
+  <p class="lead">The goal was printed on the card: five in a row wins. The game spent the whole session moving it.</p>
+  <p><span class="tag broken">Broken</span>Blackout Lite quietly made some cards unwinnable. Nobody was told which.</p>
+  <p><span class="tag broken">Broken</span>Pattern Swap moved the goal mid-play, after players had spent their marks chasing the old one.</p>
+  <p><span class="tag mocked">Mocked</span>Goal Rebalance inverted it: you win by being unable to make any line. Playing well became losing.</p>
+  <p><span class="tag mocked">Mocked</span>The House card wins on a signal. The goal was never reachable. The card even warned them: "Rules as of patch 1.0."</p>
+</div></section>
+
+<section class="tool"><div class="num">04</div><div>
+  <h2>Challenge</h2>
+  <p class="lead">A challenge is something players can overcome. Bingo has nothing to overcome.</p>
+  <p><span class="tag ignored">Ignored</span>Every card holds all 25 numbers. Every call hits every player. There is no obstacle, only waiting.</p>
+  <p><span class="tag broken">Broken</span>Verification Tax freezes your row when you get checked. Getting close is punished.</p>
+  <p><span class="tag broken">Broken</span>The Caller's brief says there is always a patch that disqualifies a claim. A challenge you can't beat isn't a challenge. It's a locked door.</p>
+</div></section>
+
+<section class="tool"><div class="num">05</div><div>
+  <h2>Skill, strategy, chance, and uncertainty</h2>
+  <p class="lead">Base bingo is pure chance. The only thing separating players is where the numbers happened to print.</p>
+  <p><span class="tag ignored">Ignored</span>No skill, no strategy. Nothing a better player could do differently.</p>
+  <p><span class="tag mocked">Mocked</span>Premium Skip: the only skill that matters is flattering the Caller.</p>
+  <p><span class="tag broken">Broken</span>Rollback and the repeat call ("it was a different 14") create uncertainty about the state of the game, not its outcome. Players want to be unsure who will win. They need to be sure what the rules are.</p>
+</div></section>
+
+<section class="tool"><div class="num">06</div><div>
+  <h2>Decision-making and feedback</h2>
+  <p class="lead">Base bingo has zero decisions. The patches added fake ones and then withheld the feedback.</p>
+  <p><span class="tag ignored">Ignored</span>Mark the number or don't. That's not a decision, that's paying attention.</p>
+  <p><span class="tag broken">Broken</span>Provisional Evens delays feedback until a future call. You don't learn if a choice worked until you can't change it.</p>
+  <p><span class="tag broken">Broken</span>Silent Patch is a rule nobody was told. Feedback arrives only as a rejection.</p>
+  <p><span class="tag broken">Broken</span>The Caller never explains a patch and misreads cards aloud during checks. The one source of feedback in the room is unreliable on purpose.</p>
+</div></section>
+
+<section class="tool"><div class="num">07</div><div>
+  <h2>Abstraction</h2>
+  <p class="lead">Abstraction simplifies something real into something playable. Rage Bait Bingo abstracts a live-service patch cycle, and it works a little too well.</p>
+  <p><span class="tag mocked">Mocked</span>Version numbers 1.1 through 2.1, rollbacks, lag, premium tiers. A number game dressed as software.</p>
+  <p><span class="tag broken">Broken</span>The B I N G O column heads promise the real bingo convention of number ranges by letter. The numbers ignore them. The abstraction lies about itself.</p>
+  <p><span class="tag broken">Broken</span>Each patch adds complexity and removes meaning. Abstraction is supposed to go the other way.</p>
+</div></section>
+
+<section class="tool"><div class="num">08</div><div>
+  <h2>Theme</h2>
+  <p class="lead">This is the one tool the game uses well. Every rule matches the theme of a live game patched by people who don't play it.</p>
+  <p><span class="tag mocked">Mocked</span>"Our Business is Fun" on every card. Patch notes read aloud like a dev blog.</p>
+  <p><span class="tag mocked">Mocked</span>Because theme and mechanics line up, the rage reads as intentional. Ask them: how long would theme alone have kept you playing?</p>
+</div></section>
+
+<section class="tool"><div class="num">09</div><div>
+  <h2>Storytelling</h2>
+  <p class="lead">Every game produces a story. This one produced exactly one: we got cheated.</p>
+  <p><span class="tag broken">Broken</span>With no decisions, the players had no part in the story. It was all about the Caller.</p>
+  <p><span class="tag mocked">Mocked</span>The House card reveal is a twist ending with no setup anyone could read. The Caller's brief says it outright: explain nothing.</p>
+</div></section>
+
+<section class="tool"><div class="num">10</div><div>
+  <h2>Context of play</h2>
+  <p class="lead">The only reason anyone kept playing is that this is a classroom and everyone knew it was a bit.</p>
+  <p><span class="tag broken">Broken</span>Sync Penalty (Ping Penalty online) turns your neighbors into hazards. Other players hurt you and nobody chose it.</p>
+  <p><span class="tag mocked">Mocked</span>A classmate was elected Caller and given power over their peers. The social setting became a mechanic.</p>
+  <p><span class="tag mocked">Mocked</span>The instructor is the house. Context gave permission for the rage. In a store-bought game, the same rules end the session in ten minutes.</p>
+</div></section>
+
+<section class="close">
+  <h2>The turn</h2>
+  <p>Every rule in this game was written clearly, and the game was still broken. Clear writing isn't design. The system is.</p>
+  <p>Debrief: each table names three problems. For each, what happened, which tool broke, and one fix. A fix that just deletes the patch doesn't count.</p>
+  <p class="note">The ten tools are from Chapter 2 of Sharp and Macklin, Games, Design and Play.</p>
+</section>
+</main>
+</body>
+</html>

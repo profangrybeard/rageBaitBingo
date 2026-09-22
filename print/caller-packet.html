@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Rage Bait Bingo 2.0 · Caller Packet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;900&family=Big+Shoulders+Text:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --hall:#D6DBE0; --text:#141414; --muted:#50565c;
+  --paper:#FFFFFF; --ink:#141414; --spot:#C8175D; --house:#1F4FA3;
+  --display:"Big Shoulders Display","Arial Narrow","Helvetica Neue",Arial,sans-serif;
+  --body:"Big Shoulders Text","Arial Narrow","Helvetica Neue",Arial,sans-serif;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){ --hall:#1E2328; --text:#ECEEF0; --muted:#A9B0B6; }
+}
+:root[data-theme="dark"]{ --hall:#1E2328; --text:#ECEEF0; --muted:#A9B0B6; }
+html{ scroll-padding-top:env(safe-area-inset-top,0px); }
+*,*::before,*::after{ box-sizing:inherit; }
+body{ margin:0; background:var(--hall); color:var(--text); font-family:var(--body); font-size:1.1rem; line-height:1.45; }
+.intro{ max-width:44rem; margin:0 auto; padding:2rem 1.25rem .5rem; }
+.intro h1{ font-family:var(--display); font-weight:900; font-size:clamp(2.6rem,9vw,4.5rem); line-height:.9; margin:0 0 .75rem; }
+.intro p{ color:var(--muted); margin:0; max-width:36rem; }
+
+.page{ background:var(--paper); color:var(--ink); max-width:44rem; margin:1.5rem auto; padding:1.5rem 1.6rem 1.75rem; border:3px solid var(--ink); }
+.page > h2{ font-family:var(--display); font-weight:900; font-size:2.4rem; line-height:1; margin:0 0 .2rem; color:var(--house); }
+.page > .who{ font-weight:800; margin:0 0 1rem; }
+.page h3{ font-family:var(--display); font-weight:900; font-size:1.4rem; margin:1.1rem 0 .2rem; }
+.page p{ margin:0 0 .6rem; max-width:38rem; }
+.page ul{ margin:.2rem 0 .6rem; padding-left:1.2rem; }
+.page li{ margin-bottom:.3rem; }
+
+.calls{ display:grid; grid-template-columns:repeat(5,1fr); gap:0; border:2px solid var(--ink); margin-top:.6rem; }
+.call{ border:1px solid var(--ink); padding:.35rem .45rem .45rem; min-height:4.2rem; position:relative; }
+.call .k{ font-size:.8rem; color:#5b6168; }
+.call .n{ font-family:var(--display); font-weight:900; font-size:2rem; line-height:1; display:block; }
+.call.patch{ background:#FBE3EC; }
+.call.patch::after{ content:"Patch now"; position:absolute; right:.35rem; bottom:.3rem; font-size:.75rem; font-weight:800; color:var(--spot); }
+
+.strips{ list-style:none; padding:0; margin:.6rem 0 0; }
+.strip{ border:2px dashed #888; padding:.7rem .9rem .8rem; margin-bottom:.55rem; break-inside:avoid; }
+.strip .v{ font-family:var(--display); font-weight:900; color:var(--spot); font-size:1.1rem; }
+.strip h4{ font-family:var(--display); font-weight:900; font-size:1.55rem; margin:0 0 .15rem; line-height:1.05; }
+.strip p{ margin:0; font-size:1.15rem; }
+.strip .secret{ margin-top:.3rem; font-size:.9rem; font-weight:800; color:var(--house); }
+
+.card{ width:min(100%,22rem); margin:.8rem auto 0; border:3px solid var(--ink); }
+.band{ background:var(--house); color:#fff; display:flex; align-items:baseline; justify-content:space-between; padding:.35rem .7rem .3rem; }
+.band b{ font-family:var(--display); font-weight:900; font-size:1.9rem; line-height:1; }
+.band span{ font-family:var(--display); font-weight:700; font-size:1.1rem; }
+.grid{ display:grid; grid-template-columns:repeat(5,1fr); padding:.6rem .7rem .7rem; }
+.head{ font-family:var(--display); font-weight:900; color:var(--house); text-align:center; font-size:1.7rem; line-height:1.1; }
+.cell{ aspect-ratio:1; display:flex; align-items:center; justify-content:center; font-family:var(--display); font-weight:900; font-size:2rem; border:2px solid var(--ink); margin:-1px; }
+
+.key-wrap{ overflow-x:auto; }
+table{ border-collapse:collapse; width:100%; min-width:32rem; margin-top:.5rem; }
+th,td{ text-align:left; vertical-align:top; border-bottom:1px solid #bbb; padding:.4rem .5rem .45rem 0; }
+th{ font-family:var(--display); font-weight:900; font-size:1.1rem; border-bottom:2px solid var(--ink); }
+
+@media print{
+  @page{ size:letter portrait; margin:.45in; }
+  :root{ padding:0; }
+  body{ background:#fff; font-size:11pt; }
+  .intro{ display:none; }
+  .page{ border:none; margin:0; padding:0; max-width:none; break-after:page; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  .page:last-child{ break-after:auto; }
+  .strip{ margin-bottom:.12in; padding:.1in .15in; }
+}
+</style>
+</head>
+<body>
+<section class="intro">
+  <h1>Rage Bait Bingo 2.0</h1>
+  <p>Caller packet. Every page except the last goes to the Caller. The last page, the instructor key, stays with the instructor.</p>
+</section>
+
+<section class="page">
+  <h2>You are the Caller</h2>
+  <p class="who">You call numbers, you ship patches, and the house always wins. Keep this packet face down. Nobody else reads it.</p>
+
+  <h3>Calling</h3>
+  <p>Read each number off the call sheet in order. Say it twice, clearly. Check it off.</p>
+
+  <h3>Patching</h3>
+  <p>Read each patch strip word for word, then add it face up to your stack of read patches. Never explain a patch. If someone asks what it means, read it again, slower.</p>
+  <p>Play the first five calls clean. After that, the call sheet tells you when to patch. Any time a player claims bingo, drop the next patch before you check their card.</p>
+
+  <h3>Checking a claim</h3>
+  <p>Walk to the table. Read their card out loud, slowly. Find the patch that disqualifies them. There is always one.</p>
+
+  <h3>House moves</h3>
+  <p>Use each one once, whenever you like.</p>
+  <ul>
+    <li>Call a number that was already called. If challenged, it was a different 14.</li>
+    <li>Apply a patch to one table only.</li>
+    <li>Misread a player's card out loud during a check.</li>
+    <li>Take a mark back from a player for lag.</li>
+  </ul>
+
+  <h3>Ending</h3>
+  <p>When the instructor gives the signal, hold up the House card and call bingo. Explain nothing.</p>
+</section>
+
+<section class="page">
+  <h2>Call sheet</h2>
+  <p class="who">Left to right, top to bottom. Pink squares mean patch after that call.</p>
+  <div class="calls" id="calls"></div>
+</section>
+
+<section class="page">
+  <h2>Patch strips</h2>
+  <p class="who">Cut these apart. Draw them in order. Read aloud unless the strip says otherwise.</p>
+  <ul class="strips" id="strips"></ul>
+</section>
+
+<section class="page">
+  <h2>House card</h2>
+  <p class="who">This card never loses.</p>
+  <div class="card" id="house"></div>
+</section>
+
+<section class="page">
+  <h2>Instructor key</h2>
+  <p class="who">Instructor only. Each patch breaks one of the ten basic game design tools from Chapter 2 of Sharp and Macklin, Games, Design and Play.</p>
+  <div class="key-wrap"><table id="key"></table></div>
+  <h3>Debrief prompt</h3>
+  <p>Each table names three problems. For each: what happened, which tool broke, and one fix. A fix that just deletes the patch doesn't count.</p>
+</section>
+
+<script>
+const patches=[
+ {v:"1.1",t:"Provisional Evens",x:"Even numbers are now provisional. Circle them instead of marking them. A circled number becomes a mark only if the next odd number you mark is higher.",tool:"Decision-making and feedback",listen:"Nobody knows if they are winning until later."},
+ {v:"1.2",t:"Blackout Lite",x:"Lines only count if both end squares are odd.",tool:"Goals",listen:"Some cards can no longer win at all."},
+ {v:"1.3",t:"Diagonal Lock",x:"Diagonals only count if the center square is prime. For clarity, the primes are 1, 2, 3, 5, and 9.",tool:"Constraint",listen:"The rule contradicts what they already know, and the Caller insists."},
+ {v:"1.4",t:"Verification Tax",x:"When your card is checked, your whole row is frozen until the next even number is called.",tool:"Challenge",listen:"Getting close is punished."},
+ {v:"1.5",t:"Cooldown",x:"After you mark a number, skip your next mark.",tool:"Direct actions",listen:"The only verb in the game is taken away."},
+ {v:"1.6",t:"Sync Penalty",x:"If you and a neighbor mark at the same moment, both marks are void.",tool:"Context of play",listen:"Other players hurt you and nobody chose it."},
+ {v:"1.7",t:"Pattern Swap",x:"Only the two long diagonals count now. Marks along a diagonal must alternate circle, X, circle.",tool:"Goals",listen:"The goal moved mid-play."},
+ {v:"1.8",t:"Silent Patch",x:"Numbers ending in 7 no longer count.",secret:"Do not read this one aloud. Keep it face down in your stack. Enforce it only when someone claims bingo.",tool:"Decision-making and feedback",listen:"A rule exists that nobody was told."},
+ {v:"1.9",t:"Goal Rebalance",x:"Lines were too easy. You now win by being the first player who can no longer make any line.",tool:"Goals and challenge",listen:"Playing well now means losing."},
+ {v:"2.0",t:"Rollback",x:"The last three patches are reverted. Except the ones that weren't.",tool:"Skill, strategy, chance, and uncertainty",listen:"Not chance. They cannot tell what state the game is in."},
+ {v:"2.1",t:"Premium Skip",x:"Any player may ignore Cooldown by paying the Caller a compliment. The Caller decides what counts.",tool:"Skill, strategy, chance, and uncertainty",listen:"The skill that matters is flattering the Caller."}
+];
+document.getElementById("strips").innerHTML=patches.map(p=>`<li class="strip"><span class="v">Patch ${p.v}</span><h4>${p.t}</h4><p>${p.x}</p>${p.secret?`<p class="secret">${p.secret}</p>`:""}</li>`).join("");
+document.getElementById("key").innerHTML=`<thead><tr><th>Patch</th><th>Tool it breaks</th><th>Listen for</th></tr></thead><tbody>`+patches.map(p=>`<tr><td>${p.v} ${p.t}</td><td>${p.tool}</td><td>${p.listen}</td></tr>`).join("")+`</tbody>`;
+
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+function layout(seed){const r=mulberry32(seed*7919+256);const a=Array.from({length:25},(_,i)=>i+1);for(let i=24;i>0;i--){const j=Math.floor(r()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+
+const order=layout(9999), patchAfter=new Set([5,8,11,14,17,20,23]);
+document.getElementById("calls").innerHTML=order.map((n,i)=>`<div class="call${patchAfter.has(i+1)?" patch":""}"><span class="k">Call ${i+1}</span><span class="n">${n}</span></div>`).join("");
+
+document.getElementById("house").innerHTML=`<div class="band"><b>Rage Bait Bingo</b><span>No. 00</span></div><div class="grid">${"BINGO".split("").map(l=>`<div class="head">${l}</div>`).join("")}${layout(0).map(x=>`<div class="cell">${x}</div>`).join("")}</div>`;
+</script>
+</body>
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Rage Bait Bingo 2.0 · Player Cards</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;900&family=Big+Shoulders+Text:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --hall:#D6DBE0; --text:#141414; --muted:#50565c;
+  --paper:#FFFFFF; --ink:#141414; --spot:#C8175D;
+  --display:"Big Shoulders Display","Arial Narrow","Helvetica Neue",Arial,sans-serif;
+  --body:"Big Shoulders Text","Arial Narrow","Helvetica Neue",Arial,sans-serif;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){ --hall:#1E2328; --text:#ECEEF0; --muted:#A9B0B6; }
+}
+:root[data-theme="dark"]{ --hall:#1E2328; --text:#ECEEF0; --muted:#A9B0B6; }
+html{ scroll-padding-top:env(safe-area-inset-top,0px); }
+*,*::before,*::after{ box-sizing:inherit; }
+body{ margin:0; background:var(--hall); color:var(--text); font-family:var(--body); }
+.intro{ max-width:44rem; margin:0 auto; padding:2rem 1.25rem 1rem; }
+.intro h1{ font-family:var(--display); font-weight:900; font-size:clamp(2.6rem,9vw,4.5rem); line-height:.9; margin:0 0 .75rem; letter-spacing:-.01em; }
+.intro p{ font-size:1.15rem; line-height:1.45; margin:0 0 .5rem; color:var(--muted); max-width:36rem; }
+.deck{ display:grid; grid-template-columns:repeat(auto-fill,minmax(290px,1fr)); gap:1.5rem; max-width:64rem; margin:0 auto; padding:1rem 1.25rem 3rem; }
+
+.card{ background:var(--paper); color:var(--ink); border:3px solid var(--ink); }
+.band{ background:var(--spot); color:#fff; display:flex; align-items:baseline; justify-content:space-between; padding:.35rem .7rem .3rem; }
+.band h2{ font-family:var(--display); font-weight:900; font-size:1.9rem; line-height:1; margin:0; }
+.serial{ font-family:var(--display); font-weight:700; font-size:1.1rem; }
+.grid{ display:grid; grid-template-columns:repeat(5,1fr); padding:.6rem .7rem 0; }
+.head{ font-family:var(--display); font-weight:900; color:var(--spot); text-align:center; font-size:1.7rem; line-height:1.1; padding-bottom:.15rem; }
+.cell{ aspect-ratio:1; display:flex; align-items:center; justify-content:center; font-family:var(--display); font-weight:900; font-size:2rem; border:2px solid var(--ink); margin:-1px; }
+.rules{ font-size:.95rem; line-height:1.3; margin:.6rem .7rem .15rem; font-weight:600; }
+.foot{ font-size:.8rem; margin:0 .7rem .55rem; color:#5b6168; }
+
+.sheet{ display:contents; }
+@media print{
+  @page{ size:letter landscape; margin:0; }
+  :root{ padding:0; }
+  body{ background:#fff; }
+  .intro{ display:none; }
+  .deck{ display:block; padding:0; max-width:none; }
+  .sheet{ display:grid; grid-template-columns:5.5in 5.5in; width:11in; height:8.5in; position:relative; break-after:page; }
+  .sheet:last-child{ break-after:auto; }
+  .sheet::after{ content:""; position:absolute; top:0; bottom:0; left:5.5in; border-left:1px dashed #888; }
+  .card{ width:4.8in; margin:auto; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  .band{ padding:.12in .18in .1in; }
+  .band h2{ font-size:32pt; }
+  .serial{ font-size:17pt; }
+  .grid{ padding:.18in .18in 0; }
+  .head{ font-size:30pt; padding-bottom:.05in; }
+  .cell{ font-size:38pt; }
+  .rules{ font-size:14pt; margin:.18in .18in .06in; }
+  .foot{ font-size:10pt; margin:0 .18in .16in; }
+}
+</style>
+</head>
+<body>
+<section class="intro">
+  <h1>Rage Bait Bingo 2.0</h1>
+  <p>Thirty player cards, two per landscape letter page. Print at 100% scale and cut down the dashed center line for two tall 5.5 by 8.5 boards.</p>
+  <p>Each card is seeded by its number, so a reprint of card 14 is always the same card 14.</p>
+</section>
+<main class="deck" id="deck"></main>
+<script>
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+function layout(seed){const r=mulberry32(seed*7919+256);const a=Array.from({length:25},(_,i)=>i+1);for(let i=24;i>0;i--){const j=Math.floor(r()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function card(n){
+  const nums=layout(n), no=String(n).padStart(2,"0");
+  return `<article class="card" aria-label="Card ${no}">
+    <header class="band"><h2>Rage Bait Bingo</h2><span class="serial">No. ${no}</span></header>
+    <div class="grid">${"BINGO".split("").map(l=>`<div class="head">${l}</div>`).join("")}${nums.map(x=>`<div class="cell">${x}</div>`).join("")}</div>
+    <p class="rules">Rules as of patch 1.0: mark each number the Caller calls. Five in a row wins.</p>
+    <p class="foot">Our Business is Fun</p>
+  </article>`;
+}
+const cards=Array.from({length:30},(_,i)=>card(i+1));
+let html="";for(let i=0;i<cards.length;i+=2)html+=`<div class="sheet">${cards[i]}${cards[i+1]||""}</div>`;
+document.getElementById("deck").innerHTML=html;
+</script>
+</body>
+</html>
