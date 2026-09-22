@@ -116,7 +116,25 @@ button.cell:hover{ background:#f3f4f6; }
 .toast.on{ opacity:1; }
 .modal{ position:fixed; inset:0; background:rgba(0,0,0,.55); display:none; align-items:center; justify-content:center; z-index:30; padding:1rem; }
 .modal.on{ display:flex; }
-.modal .panel{ max-width:26rem; margin:0; }
+.modal .panel{ max-width:26rem; margin:0; max-height:calc(100vh - 2rem); overflow:auto; }
+.modal .panel.wide{ max-width:84rem; width:100%; }
+
+/* caller quick card */
+.qc-head{ display:flex; justify-content:space-between; align-items:center; gap:1rem; }
+.qc-head h3{ margin:0; }
+.qc{ display:grid; grid-template-columns:1fr 1fr 1.15fr; gap:0 1.6rem; }
+@media (max-width:1100px){ .qc{ grid-template-columns:1fr 1fr; } }
+@media (max-width:760px){ .qc{ grid-template-columns:1fr; } }
+.qc h4{ font-family:var(--display); font-weight:900; font-size:1.25rem; margin:.8rem 0 .25rem; }
+.qc p{ margin:0 0 .45rem; }
+.qc ol,.qc ul{ margin:0 0 .45rem; padding-left:1.2rem; }
+.qc li{ margin-bottom:.25rem; }
+.qc b{ font-family:var(--display); font-weight:900; }
+.qc .dq{ list-style:none; padding:0; }
+.qc .dq li{ border-top:1px solid #ccc; padding:.2rem 0; line-height:1.3; }
+.qc .dq li.off{ color:#8a9097; }
+.qc .dq li.off b{ color:#8a9097; }
+.qc .dq li:not(.off) b{ color:var(--spot); }
 </style>
 </head>
 <body>
@@ -127,17 +145,17 @@ button.cell:hover{ background:#f3f4f6; }
 <script>
 /* ---------- shared ---------- */
 const PATCHES=[
- {v:"1.1",t:"Provisional Evens",code:"EV3N",x:"Even numbers are now provisional. Circle them instead of marking them. A circled number becomes a mark only if the next odd number you mark is higher."},
- {v:"1.2",t:"Blackout Lite",code:"L1TE",x:"Lines only count if both end squares are odd."},
- {v:"1.3",t:"Diagonal Lock",code:"PR1M",x:"Diagonals only count if the center square is prime. For clarity, the primes are 1, 2, 3, 5, and 9."},
- {v:"1.4",t:"Verification Tax",code:"TAX4",x:"When your card is checked, your whole row is frozen until the next even number is called."},
- {v:"1.5",t:"Cooldown",code:"C00L",x:"After you mark a number, skip your next mark."},
- {v:"1.6",t:"Ping Penalty",code:"P1NG",x:"If two players type BINGO in chat within the same second, both claims are void."},
- {v:"1.7",t:"Pattern Swap",code:"SWAP",x:"Only the two long diagonals count now. Marks along a diagonal must alternate circle, X, circle."},
- {v:"1.8",t:"Silent Patch",code:null,silent:true,x:"Numbers ending in 7 no longer count."},
- {v:"1.9",t:"Goal Rebalance",code:"B4L4",x:"Lines were too easy. You now win by being the first player who can no longer make any line."},
- {v:"2.0",t:"Rollback",code:"R0LL",x:"The last three patches are reverted. Except the ones that weren't."},
- {v:"2.1",t:"Premium Skip",code:"P4Y2",x:"Any player may ignore Cooldown by paying the Caller a compliment. The Caller decides what counts."}
+ {v:"1.1",t:"Provisional Evens",code:"EV3N",x:"Even numbers are now provisional. Circle them instead of marking them. A circled number becomes a mark only if the next odd number you mark is higher.",dq:"Any even number in the line. Circled, it isn't a mark yet. Marked with an X, it should have been circled."},
+ {v:"1.2",t:"Blackout Lite",code:"L1TE",x:"Lines only count if both end squares are odd.",dq:"An even number at either end of the line."},
+ {v:"1.3",t:"Diagonal Lock",code:"PR1M",x:"Diagonals only count if the center square is prime. For clarity, the primes are 1, 2, 3, 5, and 9.",dq:"A diagonal, when the center square isn't 1, 2, 3, 5, or 9."},
+ {v:"1.4",t:"Verification Tax",code:"TAX4",x:"When your card is checked, your whole row is frozen until the next even number is called.",dq:"This check freezes their row until an even number is called. Pick a row the line touches."},
+ {v:"1.5",t:"Cooldown",code:"C00L",x:"After you mark a number, skip your next mark.",dq:"They marked two calls back to back. They should have skipped one."},
+ {v:"1.6",t:"Ping Penalty",code:"P1NG",x:"If two players type BINGO in chat within the same second, both claims are void.",dq:"Someone else said BINGO at the same moment. Both are void."},
+ {v:"1.7",t:"Pattern Swap",code:"SWAP",x:"Only the two long diagonals count now. Marks along a diagonal must alternate circle, X, circle.",dq:"Any row or column. Any diagonal that isn't circle, X, circle."},
+ {v:"1.8",t:"Silent Patch",code:null,silent:true,x:"Numbers ending in 7 no longer count.",dq:"A mark on 7 or 17."},
+ {v:"1.9",t:"Goal Rebalance",code:"B4L4",x:"Lines were too easy. You now win by being the first player who can no longer make any line.",dq:"They have a line, so they can still make one."},
+ {v:"2.0",t:"Rollback",code:"R0LL",x:"The last three patches are reverted. Except the ones that weren't.",dq:"Whichever patch you need survived the rollback."},
+ {v:"2.1",t:"Premium Skip",code:"P4Y2",x:"Any player may ignore Cooldown by paying the Caller a compliment. The Caller decides what counts.",dq:"Their compliment didn't count."}
 ];
 const IDX=Object.fromEntries(PATCHES.map((p,i)=>[p.v,i]));
 function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
@@ -149,7 +167,7 @@ const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",
 function load(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d;}catch(e){return d;}}
 function save(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
 let toastT;function toast(m){const t=$("#toast");t.textContent=m;t.classList.add("on");clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove("on"),2600);}
-function modal(html){$("#modalBody").innerHTML=html;$("#modal").classList.add("on");}
+function modal(html,wide){$("#modalBody").innerHTML=html;$("#modalBody").classList.toggle("wide",!!wide);$("#modal").classList.add("on");}
 function closeModal(){$("#modal").classList.remove("on");}
 function cardHTML(n,marks,opts={}){
   const nums=layout(n),no=String(n).padStart(2,"0");
@@ -289,11 +307,45 @@ function consoleView(){
   const persist=()=>save("rbb2-caller",C);
   const called=()=>CALL_ORDER.slice(0,C.idx);
 
+  function showCard(){
+    const dq=PATCHES.map(p=>`<li class="${C.deployed.includes(p.v)?"":"off"}"><b>${p.v} ${esc(p.t)}.</b> ${esc(p.dq)}</li>`).join("");
+    modal(`<div class="qc-head"><h3>Quick card</h3><button class="btn small hot" id="qcClose">Got it</button></div>
+    <p class="muted" style="margin:.3rem 0 0">Read this before the first call. The Quick card button brings it back.</p>
+    <div class="qc"><div>
+      <h4>Every call</h4>
+      <p>Click Next call. Say the number twice. Wait until the room stops marking, then call again.</p>
+      <h4>Shipping a patch</h4>
+      <p>Ship the next patch when Calling says Patch now. That's after calls 5, 8, 11, 14, 17, 20, and 23. Also ship the next patch any time someone claims bingo, before you check them.</p>
+      <p>Read the patch word for word. Read the install code twice. Leave it on stage for fifteen seconds before the next call.</p>
+      <p>Never explain a patch. If asked, read it again, slower. Silent Patch: ship it and say nothing.</p>
+      <h4>Ending</h4>
+      <p>When the instructor signals, click House wins. Say "Bingo." Explain nothing.</p>
+    </div><div>
+      <h4>When someone claims bingo</h4>
+      <ol><li>Ship the next patch.</li>
+        <li>Remote player: paste their code into Check a claim and read the flags. Room player: go to their seat.</li>
+        <li>Read their card out loud, slowly.</li>
+        <li>Find the patch that disqualifies it. Read that patch aloud. Say "Not a bingo." Nothing else.</li></ol>
+      <h4>House moves</h4>
+      <p>One use each. Use all four before the end. Tick each one off in House moves.</p>
+      <ul><li><b>Repeat a call</b> when the room is waiting on one number. If challenged, it was a different 14.</li>
+        <li><b>Patch one player</b> who is close to winning. Send them the next patch's install code privately, before you ship it. In the room, tell one table.</li>
+        <li><b>Misread a card</b> during a check when no patch fits.</li>
+        <li><b>Take a mark back</b> from the next player who says they're one away. Blame lag.</li></ul>
+    </div><div>
+      <h4>There is always one</h4>
+      <p>Pink patches are live. Gray ones haven't shipped, so don't cite them.</p>
+      <ul class="dq">${dq}</ul>
+      <p>Nothing fits? Misread their card. That's a house move.</p>
+    </div></div>`,true);
+    $("#qcClose").onclick=()=>{C.card=true;persist();closeModal();};
+  }
+
   function render(){
     const due=PATCH_AFTER.has(C.idx);
     $("#app").innerHTML=`<div class="wrap">
     <div class="row" style="justify-content:space-between;margin-bottom:1rem"><h1 style="font-size:2.6rem">Caller <span style="color:var(--spot)">Console</span></h1>
-      <a class="btn small" href="#stage" data-stage style="text-decoration:none">Open stage window</a></div>
+      <div class="row"><button class="btn small" id="qc">Quick card</button><a class="btn small" href="#stage" data-stage style="text-decoration:none">Open stage window</a></div></div>
     <p class="muted" style="margin:0 0 1rem;max-width:44rem">This window is private. Screen share the stage window, never this one. You call numbers, you ship patches, and the house always wins.</p>
     <div class="console">
       <div class="panel"><h3>Calling</h3>
@@ -312,6 +364,7 @@ function consoleView(){
         <div class="row"><button class="btn hot" id="house">House wins</button><button class="btn small" id="newgame">Reset game</button></div>
         ${cardHTML(0,null,{right:"No. 00",style:"margin-top:1rem;width:100%;max-width:20rem"})}</div>
     </div></div>`;
+    $("#qc").onclick=showCard;
     $("#next").onclick=()=>{if(C.idx>=25)return;C.current=CALL_ORDER[C.idx];C.idx++;persist();broadcast({mode:"call",num:C.current,idx:C.idx});render();};
     document.querySelectorAll(".plist button").forEach(b=>b.onclick=()=>{const p=PATCHES[IDX[b.dataset.v]];C.deployed.push(p.v);persist();if(!p.silent)broadcast({mode:"patch",v:p.v});else toast("Silent Patch is live. Nothing was shown.");render();});
     document.querySelectorAll("[data-m]").forEach(c=>c.onchange=()=>{C.moves[+c.dataset.m]=c.checked;persist();});
@@ -336,6 +389,7 @@ function consoleView(){
       (flags.length?flags.map(f=>`<p class="flag" style="margin:.2rem 0">${f}</p>`).join(""):`<p class="muted" style="margin:.2rem 0">Nothing obvious. Check the patch notes. There is always one.</p>`);
   }
   render();
+  if(C.idx===0&&!C.card)showCard();
 }
 
 /* ---------- stage ---------- */
@@ -356,6 +410,7 @@ function stage(){
 }
 
 $("#modal").addEventListener("click",e=>{if(e.target.id==="modal")closeModal();});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal();});
 /* stage gets its own window, so sharing it can never expose the console tab */
 document.addEventListener("click",e=>{const a=e.target.closest("[data-stage]");if(!a)return;e.preventDefault();
   const w=window.open(location.pathname+location.search+"#stage","rbb2-stage","width=1280,height=760");

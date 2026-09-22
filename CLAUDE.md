@@ -24,7 +24,7 @@ The owner is a game design professor. Other instructors now run this exercise to
 
 ## How to work here
 
-- Before changing game rules or patches, read `docs/design.md` and `docs/pedagogy.md`. A patch change usually touches four places: `index.html` PATCHES, `print/caller-packet.html` patches, `print/wrap-up-lecture-sheet.html`, and `docs/design.md`.
+- Before changing game rules or patches, read `docs/design.md` and `docs/pedagogy.md`. A patch change usually touches four places: `index.html` PATCHES (the rule text `x` and the console quick card's disqualifier line `dq`), `print/caller-packet.html` patches, `print/wrap-up-lecture-sheet.html`, and `docs/design.md`. Online and paper rule text must match word for word, except Sync Penalty and Ping Penalty.
 - After any change to `print/`, run `python tools/render_pdfs.py`. It re-renders `pdf/` and fails if page counts drift.
 - After any change to `index.html`, run `python tests/smoke_online.py`.
 - Before any commit, run `python tests/check_text.py`.

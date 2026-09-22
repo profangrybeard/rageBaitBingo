@@ -29,7 +29,7 @@ Open the site at https://profangrybeard.github.io/rageBaitBingo/ and follow the 
 Room players use paper, remote players use the site, and one Caller runs the whole game from the console.
 
 1. Print player cards for the room. Skip the caller packet. The console has the call sheet, every patch, and the House card.
-2. Pick a Caller who is in the room and has a laptop. They open the console, then click Open stage, which opens the stage in its own window. Put that window on the projector and share it on the call. The console stays on the laptop screen only. Join the call on that laptop with audio off so the room doesn't echo.
+2. Pick a Caller who is in the room and has a laptop. They open the console, read the quick card that opens with it, then click Open stage, which opens the stage in its own window. Put that window on the projector and share it on the call. The console stays on the laptop screen only. Join the call on that laptop with audio off so the room doesn't echo.
 3. Hand out paper cards starting at 1. Give remote players numbers starting at 31, so no two players hold the same card.
 4. The Caller says every number out loud where the call can hear it, and ships every patch from the console. Room players read patches off the projector.
 5. Room players claim out loud and the Caller checks their card at their seat. Remote players claim in chat with their verification code.

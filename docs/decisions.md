@@ -2,6 +2,12 @@
 
 Newest first. The reason is the important part.
 
+## 2026-09-21 · Caller quick card lives in the console
+
+**Decision.** The Caller quick card is a one-screen card inside the console, not a printed half-sheet. It opens by itself on a fresh game. It covers when to call, when to ship, the claim routine, when to use each house move, and one disqualifier line per patch, with only shipped patches highlighted.
+**Why.** The retrospective's first worry is a Caller who freezes, especially on house moves. The console is where the Caller already is, so a card there costs the instructor no prep and can't be left at home. Opening before the first call means a first-time Caller reads it without being told to. The disqualifier list turns "there is always one" from a promise into something a student can do in ten seconds. Each line sits in PATCHES next to its rule, so changing a patch without its disqualifier is hard to miss.
+**Cost.** The paper packet's brief still has no "when" for house moves. If paper-only Callers freeze, copy the house move lines to page one of the packet.
+
 ## 2026-09-21 · Patch text is identical in both editions, except Ping Penalty
 
 **Decision.** The online patch text now matches the paper strips word for word. Pattern Swap alternates circle, X, circle. Premium Skip reads "ignore Cooldown by paying the Caller a compliment," with no "in chat." Sync Penalty and Ping Penalty are the one deliberate difference.

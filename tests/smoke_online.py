@@ -6,6 +6,7 @@ Usage (from the repo root):
     python tests/smoke_online.py
 
 What it proves, in one browser context (same as the Caller's machine):
+  0. The Caller quick card opens on a fresh console and stays closed once dismissed.
   1. Console can make calls and they reach the stage window.
   2. Shipping a patch puts its install card on stage.
   3. A player can install that patch (retrying through the fake failure).
@@ -47,6 +48,13 @@ async def main():
 
         console = watch(await ctx.new_page())
         await console.goto(URL + "#console")
+        card = await console.inner_text("#modal")
+        expect(await console.is_visible("#modal") and "There is always one" in card,
+               "quick card opens on a fresh console")
+        await console.click("#qcClose")
+        await console.reload()
+        expect(not await console.is_visible("#modal"),
+               "quick card stays closed after Got it")
         stage = watch(await ctx.new_page())
         await stage.goto(URL + "#stage")
         await stage.wait_for_timeout(200)
@@ -62,6 +70,13 @@ async def main():
         stage_text = await stage.inner_text("#app")
         expect("Cooldown" in stage_text and "C00L" in stage_text,
                "stage shows the Cooldown patch and its install code")
+
+        await console.click("#qc")
+        live = await console.evaluate(
+            "[...document.querySelectorAll('.dq li:not(.off) b')].map(b=>b.textContent)")
+        expect(live == ["1.5 Cooldown."], f"quick card marks only shipped patches live ({live})")
+        await console.keyboard.press("Escape")
+        expect(not await console.is_visible("#modal"), "Escape closes the quick card")
 
         player = watch(await ctx.new_page())
         await player.goto(URL + "#player/14")

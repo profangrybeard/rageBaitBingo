@@ -10,7 +10,7 @@ Hash routing, so any static host works.
 |---|---|---|
 | `#` (none) | Everyone | Landing. Player door, Caller door, instructor setup notes, links to the paper edition. |
 | `#player/N` | Players | Card N, 1 to 99. Mark, install patches, get a claim code, read patch notes. |
-| `#console` | Caller only | Private. Next call, ship patches, check claims, house moves, House card ending. |
+| `#console` | Caller only | Private. Quick card, next call, ship patches, check claims, house moves, House card ending. |
 | `#stage` | Caller, screen shared | Big number, patch install cards, House card win screen. |
 
 ## How a session runs
@@ -22,12 +22,18 @@ Hash routing, so any static host works.
 5. To claim, a player types BINGO in chat, clicks Get verification code, and pastes the code in chat. The Caller pastes it into the console.
 6. On the instructor's signal, the Caller clicks House wins. The stage shows the House card, fully marked.
 
+## Caller quick card
+
+A one-screen card in the console: when to call, when to ship, what to do on a claim, when to use each house move, and how each patch disqualifies a claim. It opens by itself on a fresh game, before the first call, and stays closed once the Caller clicks Got it. The Quick card button reopens it. Esc closes it.
+
+The disqualifier list comes from each patch's `dq` field in PATCHES, so it can't drift from the rule text. Shipped patches show in pink and the rest in gray, so the Caller only cites rules that are live. It fits a 1366 by 768 laptop screen without scrolling in three columns.
+
 ## State
 
 Everything lives in the browser. No shared server state.
 
 - **Player:** `localStorage["rbb2-player-N"]` holds marks (0 empty, 1 X, 2 circle), installed patch versions, cooldown flag, and which patches already failed an install once.
-- **Caller:** `localStorage["rbb2-caller"]` holds call index, shipped patches, house move checkboxes, and the current number.
+- **Caller:** `localStorage["rbb2-caller"]` holds call index, shipped patches, house move checkboxes, the current number, and whether the quick card was dismissed. Reset game clears all of it, so the card opens again for the next Caller.
 - **Stage:** reads `localStorage["rbb2-stage"]`.
 
 All localStorage access is wrapped in try/catch. The page still works in a private window, it just forgets on refresh.
