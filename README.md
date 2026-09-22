@@ -22,7 +22,7 @@ Print these from `pdf/` at 100% scale:
 
 ## Run it online
 
-Open the site and follow the instructor setup notes on the landing page. One student runs the Caller console and screen shares the stage. Everyone else opens their own card by number. No accounts needed.
+Open the site at https://profangrybeard.github.io/rageBaitBingo/ and follow the instructor setup notes on the landing page. One student runs the Caller console and screen shares the stage. Everyone else opens their own card by number. No accounts needed.
 
 ## Run it with a mixed room
 
