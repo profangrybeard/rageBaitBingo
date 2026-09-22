@@ -34,7 +34,7 @@ Bingo has no decisions. Every card in this game holds all 25 numbers, so every c
 | 1.4 | Verification Tax | When your card is checked, your whole row freezes until the next even call. | Challenge |
 | 1.5 | Cooldown | After you mark a number, skip your next mark. | Direct actions |
 | 1.6 | Sync Penalty (paper) / Ping Penalty (online) | Paper: simultaneous marks by neighbors void both. Online: two BINGOs in chat in the same second void both. | Context of play |
-| 1.7 | Pattern Swap | Only the two long diagonals count. Marks along a diagonal must alternate. | Goals |
+| 1.7 | Pattern Swap | Only the two long diagonals count. Marks along a diagonal must alternate circle, X, circle. | Goals |
 | 1.8 | Silent Patch | Numbers ending in 7 no longer count. Never announced. Enforced only on a claim. | Decision-making and feedback |
 | 1.9 | Goal Rebalance | You win by being the first player who can no longer make any line. | Goals and challenge |
 | 2.0 | Rollback | The last three patches are reverted. Except the ones that weren't. | Skill, strategy, chance, and uncertainty |
