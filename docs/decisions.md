@@ -2,10 +2,10 @@
 
 Newest first. The reason is the important part.
 
-## 2026-09-21 · Pattern Swap reads "circle, X, circle" in both editions
+## 2026-09-21 · Patch text is identical in both editions, except Ping Penalty
 
-**Decision.** The online patch text now matches the paper strip: marks along a diagonal alternate circle, X, circle.
-**Why.** Online said "X, circle, X" and paper said "circle, X, circle." In a mixed room, a student holding the paper rule and a student reading the stage would be playing different patches, and the difference was an accident, not a joke. The owner picked the paper wording.
+**Decision.** The online patch text now matches the paper strips word for word. Pattern Swap alternates circle, X, circle. Premium Skip reads "ignore Cooldown by paying the Caller a compliment," with no "in chat." Sync Penalty and Ping Penalty are the one deliberate difference.
+**Why.** Online said "X, circle, X" and paper said "circle, X, circle." In a mixed room, a student holding the paper rule and a student reading the stage would be playing different patches, and the difference was an accident, not a joke. Premium Skip's "in chat" told room players, who read the projected stage, that a compliment had to be typed. The owner picked the paper wording both times.
 
 ## 2026-09-21 · Mixed rooms are a supported way to run it
 

@@ -38,7 +38,7 @@ Bingo has no decisions. Every card in this game holds all 25 numbers, so every c
 | 1.8 | Silent Patch | Numbers ending in 7 no longer count. Never announced. Enforced only on a claim. | Decision-making and feedback |
 | 1.9 | Goal Rebalance | You win by being the first player who can no longer make any line. | Goals and challenge |
 | 2.0 | Rollback | The last three patches are reverted. Except the ones that weren't. | Skill, strategy, chance, and uncertainty |
-| 2.1 | Premium Skip | Skip Cooldown by paying the Caller a compliment. The Caller decides what counts. | Skill, strategy, chance, and uncertainty |
+| 2.1 | Premium Skip | Any player may ignore Cooldown by paying the Caller a compliment. The Caller decides what counts. | Skill, strategy, chance, and uncertainty |
 
 Goals is hit three times on purpose. Moving the goal is the most visible way a live game betrays its players, and students feel it hardest.
 
